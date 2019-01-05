@@ -32,4 +32,18 @@ public class CustomerMapperTest {
         assertThat(customerDTO.getFirstName(), is(FIRST));
         assertThat(customerDTO.getLastName(), is(LAST));
     }
+
+    @Test
+    public void customerDTOToCustomer() {
+
+        CustomerDTO customerDTO =  new CustomerDTO();
+        customerDTO.setFirstName(FIRST);
+        customerDTO.setLastName(LAST);
+
+        Customer customer =  customerMapper.customerDTOToCustomer(customerDTO);
+
+        assertThat(customer, not(nullValue()));
+        assertThat(customer.getFirstName(), is(FIRST));
+        assertThat(customer.getLastName(), is(LAST));
+    }
 }

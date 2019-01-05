@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceTest {
@@ -56,5 +57,25 @@ public class CustomerServiceTest {
 
         assertThat(customerReturned.getFirstName(), is(JOHN));
         assertThat(customerReturned.getLastName(), is(DOE));
+    }
+
+    @Test
+    public void addCustomer() {
+        CustomerDTO customerDTO =  new CustomerDTO();
+        customerDTO.setFirstName("Hammad");
+        customerDTO.setLastName("Yaqoob");
+
+        Customer customer = new Customer();
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
+        customer.setId(1L);
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+
+        CustomerDTO savedDTO = customerService.addCustomer(customerDTO);
+
+        assertThat(savedDTO.getFirstName(), is(customerDTO.getFirstName()));
+        assertThat(savedDTO.getLastName(), is(customerDTO.getLastName()));
+        assertThat(savedDTO.getCustomerUrl(), is("/api/v1/customers/1"));
     }
 }
