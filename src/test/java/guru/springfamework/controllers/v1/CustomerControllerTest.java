@@ -26,9 +26,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 public class CustomerControllerTest {
 
@@ -114,6 +112,27 @@ public class CustomerControllerTest {
                 .content(asJsonString(customerDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Hammad")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
+    }
+
+    @Test
+    public void patchCustomer() throws Exception {
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Fred");
+        customerDTO.setLastName("Yaqoob");
+
+        CustomerDTO returnedCustomerDTO = new CustomerDTO();
+        returnedCustomerDTO.setFirstName(customerDTO.getFirstName());
+        returnedCustomerDTO.setLastName(customerDTO.getLastName());
+        returnedCustomerDTO.setCustomerUrl("/api/v1/customers/1");
+
+        when(customerService.saveCustomerByDTO(1L, customerDTO)).thenReturn(returnedCustomerDTO);
+
+        mockMvc.perform(patch("/api/v1/customers/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(customerDTO)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Fred")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customer_url", equalTo("/api/v1/customers/1")));
     }
 

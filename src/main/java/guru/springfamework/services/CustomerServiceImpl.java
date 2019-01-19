@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -50,6 +53,22 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
         customer.setId(id);
         return saveAndReturnCustomerDTO(customer);
+    }
+
+    @Override
+    public CustomerDTO patchCustomerByDTO(Long id, CustomerDTO customerDTO) {
+        return customerRepository.findById(id).map(customer -> {
+            if(nonNull(customerDTO.getFirstName())) {
+                customer.setFirstName(customerDTO.getFirstName());
+            }
+
+            if(nonNull(customerDTO.getLastName())) {
+                customer.setLastName(customerDTO.getLastName());
+            }
+            CustomerDTO savedCustomerDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
+            savedCustomerDTO.setCustomerUrl("/api/v1/customers/" + id);
+            return savedCustomerDTO;
+        }).orElseThrow(RuntimeException::new);
     }
 
     private CustomerDTO saveAndReturnCustomerDTO(Customer customer) {
