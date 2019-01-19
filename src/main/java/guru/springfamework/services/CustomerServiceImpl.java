@@ -2,6 +2,7 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,13 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 }).collect(Collectors.toList());
+    }
+
+    private String getCustomerUrl(Long id) {
+        return CustomerController.API_V1_CUSTOMERS_URL + id;
     }
 
     @Override
@@ -66,7 +71,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setLastName(customerDTO.getLastName());
             }
             CustomerDTO savedCustomerDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
-            savedCustomerDTO.setCustomerUrl("/api/v1/customers/" + id);
+            savedCustomerDTO.setCustomerUrl(getCustomerUrl(id));
             return savedCustomerDTO;
         }).orElseThrow(RuntimeException::new);
     }
@@ -74,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDTO saveAndReturnCustomerDTO(Customer customer) {
         Customer savedCustomer =  customerRepository.save(customer);
         CustomerDTO savedCustomerDTO = customerMapper.customerToCustomerDTO(savedCustomer);
-        savedCustomerDTO.setCustomerUrl("/api/v1/customers/" + savedCustomer.getId());
+        savedCustomerDTO.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
         return savedCustomerDTO;
     }
 
