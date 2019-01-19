@@ -17,6 +17,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceTest {
@@ -97,5 +98,12 @@ public class CustomerServiceTest {
         assertThat(savedDTO.getFirstName(), is(customerDTO.getFirstName()));
         assertThat(savedDTO.getLastName(), is(customerDTO.getLastName()));
         assertThat(savedDTO.getCustomerUrl(), is("/api/v1/customers/1"));
+    }
+
+    @Test
+    public void deleteCustomer() {
+        customerService.deleteByCustomerId(1L);
+
+        verify(customerRepository).deleteById(1L);
     }
 }
