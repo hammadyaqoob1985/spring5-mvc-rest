@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.api.v1.model.CustomerListDTO;
+import guru.springfamework.controllers.RestResponseEntityExceptionHandler;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.services.CustomerService;
+import guru.springfamework.services.ResourceNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
+import static guru.springfamework.controllers.v1.CategoryController.API_V1_CATEGORIES_URL;
 import static guru.springfamework.controllers.v1.CustomerController.API_V1_CUSTOMERS_URL;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
@@ -43,7 +46,9 @@ public class CustomerControllerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
     }
 
     @Test
@@ -124,6 +129,17 @@ public class CustomerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         verify(customerService).deleteByCustomerId(1L);
+    }
+
+    @Test
+    public void testNameNotFound() throws Exception {
+
+        when(customerService.getCustomerById(any())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc
+                .perform(get(API_V1_CUSTOMERS_URL + "50")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     public String asJsonString(Object obj) {
