@@ -2,21 +2,26 @@ package guru.springfamework.bootstrap;
 
 import guru.springfamework.domain.Category;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.domain.Vendor;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
+import guru.springfamework.repositories.VendorRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Bootstrap implements CommandLineRunner {
 
-    public static final String SHOP_CUSTOMERS = "/shop/customers/";
     private CategoryRepository categoryRepository;
     private CustomerRepository customerRepository;
+    private VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository,
+                     CustomerRepository customerRepository,
+                     VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
@@ -24,7 +29,19 @@ public class Bootstrap implements CommandLineRunner {
 
         addCategories();
         addCustomers();
+        addVendors();
 
+    }
+
+    private void addVendors() {
+        Vendor vendor = new Vendor();
+        vendor.setName("Western Tasty Fruits Ltd.");
+
+        Vendor vendor2 = new Vendor();
+        vendor2.setName("Exotic Fruits Company");
+
+        vendorRepository.save(vendor);
+        vendorRepository.save(vendor2);
     }
 
     private void addCustomers() {
