@@ -1,6 +1,7 @@
 package guru.springfamework.api.v1.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Data
 public class CustomerDTO {
+    @ApiModelProperty(value = "first name", required = true)
     @JsonProperty("firstname")
     private String firstName;
+    @ApiModelProperty(value = "last name", required = true)
     @JsonProperty("lastname")
     private String lastName;
     @JsonProperty("customer_url")
