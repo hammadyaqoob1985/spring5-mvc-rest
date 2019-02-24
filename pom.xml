@@ -68,6 +68,16 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>LATEST</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>LATEST</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>woodstox-core-asl</artifactId>
+			<version>LATEST</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -62,7 +62,8 @@ public class CustomerControllerTest {
         when(customerService.getAllCustomers()).thenReturn(Arrays.asList(customerDTO, customerDTO1));
 
         mockMvc.perform(get(API_V1_CUSTOMERS_URL)
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customers", hasSize(2)));
     }
@@ -75,7 +76,8 @@ public class CustomerControllerTest {
         when(customerService.getCustomerById(anyLong())).thenReturn(customerDTO);
 
         mockMvc.perform(get(API_V1_CUSTOMERS_URL + "1")
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("John")));
     }
@@ -95,7 +97,8 @@ public class CustomerControllerTest {
 
         mockMvc.perform(post(API_V1_CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
+                .content(asJsonString(customerDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Hammad")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customer_url", equalTo(API_V1_CUSTOMERS_URL + "1")));
@@ -116,7 +119,8 @@ public class CustomerControllerTest {
 
         mockMvc.perform(put(API_V1_CUSTOMERS_URL + "1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(customerDTO)))
+                .content(asJsonString(customerDTO))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Hammad")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.customer_url", equalTo(API_V1_CUSTOMERS_URL + "1")));
