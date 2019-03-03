@@ -1,9 +1,9 @@
 package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
-import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.model.CustomerDTO;
 import guru.springfamework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -66,12 +66,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO patchCustomerByDTO(Long id, CustomerDTO customerDTO) {
         return customerRepository.findById(id).map(customer -> {
-            if (nonNull(customerDTO.getFirstName())) {
-                customer.setFirstName(customerDTO.getFirstName());
+            if (nonNull(customerDTO.getFirstname())) {
+                customer.setFirstName(customerDTO.getFirstname());
             }
 
-            if (nonNull(customerDTO.getLastName())) {
-                customer.setLastName(customerDTO.getLastName());
+            if (nonNull(customerDTO.getLastname())) {
+                customer.setLastName(customerDTO.getLastname());
             }
             CustomerDTO savedCustomerDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             savedCustomerDTO.setCustomerUrl(getCustomerUrl(id));

@@ -28,7 +28,7 @@
                </executions>
                <configuration>
                    <!-- The package of your generated sources -->
-                   <packageName>guru.springfamework.domain</packageName>
+                   <packageName>guru.springfamework.model</packageName>
                    <sources>
                        <source>src/main/resources/xsd</source>
                    </sources>

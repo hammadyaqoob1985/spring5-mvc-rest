@@ -1,9 +1,9 @@
 package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
-import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.bootstrap.Bootstrap;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.model.CustomerDTO;
 import guru.springfamework.repositories.CategoryRepository;
 import guru.springfamework.repositories.CustomerRepository;
 import guru.springfamework.repositories.VendorRepository;
@@ -56,7 +56,7 @@ public class CustomerServiceImplIT {
         String originalLastName = original.getLastName();
 
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstName("Updated");
+        customerDTO.setFirstname("Updated");
 
         customerService.patchCustomerByDTO(id, customerDTO);
 
@@ -78,7 +78,7 @@ public class CustomerServiceImplIT {
        String originalLastName = original.getLastName();
 
        CustomerDTO customerDTO = new CustomerDTO();
-       customerDTO.setLastName("Updated");
+       customerDTO.setLastname("Updated");
 
        customerService.patchCustomerByDTO(id, customerDTO);
 

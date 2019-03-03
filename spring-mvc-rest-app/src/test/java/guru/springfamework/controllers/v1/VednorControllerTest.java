@@ -2,10 +2,7 @@ package guru.springfamework.controllers.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.api.v1.model.VendorDTO;
-import guru.springfamework.controllers.RestResponseEntityExceptionHandler;
-import guru.springfamework.services.CustomerService;
 import guru.springfamework.services.ResourceNotFoundException;
 import guru.springfamework.services.VendorService;
 import org.junit.Before;

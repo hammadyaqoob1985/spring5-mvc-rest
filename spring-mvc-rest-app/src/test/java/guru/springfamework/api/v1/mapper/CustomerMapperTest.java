@@ -1,7 +1,7 @@
 package guru.springfamework.api.v1.mapper;
 
-import guru.springfamework.api.v1.model.CustomerDTO;
 import guru.springfamework.domain.Customer;
+import guru.springfamework.model.CustomerDTO;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
@@ -27,16 +27,16 @@ public class CustomerMapperTest {
         CustomerDTO customerDTO =  customerMapper.customerToCustomerDTO(customer);
 
         assertThat(customerDTO, not(nullValue()));
-        assertThat(customerDTO.getFirstName(), is(FIRST));
-        assertThat(customerDTO.getLastName(), is(LAST));
+        assertThat(customerDTO.getFirstname(), is(FIRST));
+        assertThat(customerDTO.getLastname(), is(LAST));
     }
 
     @Test
     public void customerDTOToCustomer() {
 
         CustomerDTO customerDTO =  new CustomerDTO();
-        customerDTO.setFirstName(FIRST);
-        customerDTO.setLastName(LAST);
+        customerDTO.setFirstname(FIRST);
+        customerDTO.setLastname(LAST);
 
         Customer customer =  customerMapper.customerDTOToCustomer(customerDTO);
 
