@@ -2,6 +2,7 @@ package guru.springfamework.controllers.v1;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import guru.springfamework.controllers.RestResponseEntityExceptionHandler;
 import guru.springfamework.model.CustomerDTO;
 import guru.springfamework.services.CustomerService;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -27,6 +29,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 public class CustomerControllerTest {
 
@@ -49,10 +52,10 @@ public class CustomerControllerTest {
     @Test
     public void getAllCustomers() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstname("John");
+        customerDTO.setFirstName("John");
 
         CustomerDTO customerDTO1 = new CustomerDTO();
-        customerDTO1.setFirstname("Jake");
+        customerDTO1.setFirstName("Jake");
 
         when(customerService.getAllCustomers()).thenReturn(Arrays.asList(customerDTO, customerDTO1));
 
@@ -66,7 +69,7 @@ public class CustomerControllerTest {
     @Test
     public void getCustomerById() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstname("John");
+        customerDTO.setFirstName("John");
 
         when(customerService.getCustomerById(anyLong())).thenReturn(customerDTO);
 
@@ -74,51 +77,53 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("John")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstName", equalTo("John")));
     }
 
     @Test
     public void addCustomer() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstname("Hammad");
-        customerDTO.setLastname("Yaqoob");
+        customerDTO.setFirstName("Hammad");
+        customerDTO.setLastName("Yaqoob");
 
         CustomerDTO returnedCustomerDTO = new CustomerDTO();
-        returnedCustomerDTO.setFirstname(customerDTO.getFirstname());
-        returnedCustomerDTO.setLastname(customerDTO.getLastname());
+        returnedCustomerDTO.setFirstName(customerDTO.getFirstName());
+        returnedCustomerDTO.setLastName(customerDTO.getLastName());
         returnedCustomerDTO.setCustomerUrl(API_V1_CUSTOMERS_URL + "1");
 
-        when(customerService.addCustomer(customerDTO)).thenReturn(returnedCustomerDTO);
+        when(customerService.addCustomer(any())).thenReturn(returnedCustomerDTO);
 
         mockMvc.perform(post(API_V1_CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Hammad")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.customerUrl", equalTo(API_V1_CUSTOMERS_URL + "1")));
+                .andExpect(MockMvcResultMatchers.jsonPath("firstName", equalTo("Hammad")))
+                .andExpect(MockMvcResultMatchers.jsonPath("customerUrl", equalTo(API_V1_CUSTOMERS_URL + "1")));
     }
 
     @Test
     public void updateCustomer() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstname("Hammad");
-        customerDTO.setLastname("Yaqoob");
+        customerDTO.setFirstName("Hammad");
+        customerDTO.setLastName("Yaqoob");
 
         CustomerDTO returnedCustomerDTO = new CustomerDTO();
-        returnedCustomerDTO.setFirstname(customerDTO.getFirstname());
-        returnedCustomerDTO.setLastname(customerDTO.getLastname());
+        returnedCustomerDTO.setFirstName(customerDTO.getFirstName());
+        returnedCustomerDTO.setLastName(customerDTO.getLastName());
         returnedCustomerDTO.setCustomerUrl(API_V1_CUSTOMERS_URL + "1");
 
-        when(customerService.saveCustomerByDTO(1L, customerDTO)).thenReturn(returnedCustomerDTO);
+        when(customerService.saveCustomerByDTO(any(), any())).thenReturn(returnedCustomerDTO);
+
+        System.out.println(asJsonString(returnedCustomerDTO));
 
         mockMvc.perform(put(API_V1_CUSTOMERS_URL + "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", equalTo("Hammad")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.customerUrl", equalTo(API_V1_CUSTOMERS_URL + "1")));
+                .andExpect(MockMvcResultMatchers.jsonPath("firstName", equalTo("Hammad")))
+                .andExpect(MockMvcResultMatchers.jsonPath("customerUrl", equalTo(API_V1_CUSTOMERS_URL + "1")));
     }
 
     @Test
@@ -143,7 +148,9 @@ public class CustomerControllerTest {
 
     public String asJsonString(Object obj) {
         try {
-            return new ObjectMapper().writeValueAsString(obj);
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            String json = ow.writeValueAsString(obj);
+            return json;
         } catch (JsonProcessingException e) {
             throw new RuntimeException();
         }

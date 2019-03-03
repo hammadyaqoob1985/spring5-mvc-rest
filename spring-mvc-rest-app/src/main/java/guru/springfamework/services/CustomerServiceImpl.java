@@ -66,12 +66,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDTO patchCustomerByDTO(Long id, CustomerDTO customerDTO) {
         return customerRepository.findById(id).map(customer -> {
-            if (nonNull(customerDTO.getFirstname())) {
-                customer.setFirstName(customerDTO.getFirstname());
+            if (nonNull(customerDTO.getFirstName())) {
+                customer.setFirstName(customerDTO.getFirstName());
             }
 
-            if (nonNull(customerDTO.getLastname())) {
-                customer.setLastName(customerDTO.getLastname());
+            if (nonNull(customerDTO.getLastName())) {
+                customer.setLastName(customerDTO.getLastName());
             }
             CustomerDTO savedCustomerDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             savedCustomerDTO.setCustomerUrl(getCustomerUrl(id));

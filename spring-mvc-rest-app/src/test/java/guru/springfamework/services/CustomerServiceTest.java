@@ -54,47 +54,47 @@ public class CustomerServiceTest {
 
         CustomerDTO customerReturned = customerService.getCustomerById(ID);
 
-        assertThat(customerReturned.getFirstname(), is(JOHN));
-        assertThat(customerReturned.getLastname(), is(DOE));
+        assertThat(customerReturned.getFirstName(), is(JOHN));
+        assertThat(customerReturned.getLastName(), is(DOE));
     }
 
     @Test
     public void addCustomer() {
         CustomerDTO customerDTO =  new CustomerDTO();
-        customerDTO.setFirstname("Hammad");
-        customerDTO.setLastname("Yaqoob");
+        customerDTO.setFirstName("Hammad");
+        customerDTO.setLastName("Yaqoob");
 
         Customer customer = new Customer();
-        customer.setFirstName(customerDTO.getFirstname());
-        customer.setLastName(customerDTO.getLastname());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
         customer.setId(1L);
 
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO savedDTO = customerService.addCustomer(customerDTO);
 
-        assertThat(savedDTO.getFirstname(), is(customerDTO.getFirstname()));
-        assertThat(savedDTO.getLastname(), is(customerDTO.getLastname()));
+        assertThat(savedDTO.getFirstName(), is(customerDTO.getFirstName()));
+        assertThat(savedDTO.getLastName(), is(customerDTO.getLastName()));
         assertThat(savedDTO.getCustomerUrl(), is("/api/v1/customers/1"));
     }
 
     @Test
     public void updateCustomer() {
         CustomerDTO customerDTO =  new CustomerDTO();
-        customerDTO.setFirstname("Hammad");
-        customerDTO.setLastname("Yaqoob");
+        customerDTO.setFirstName("Hammad");
+        customerDTO.setLastName("Yaqoob");
 
         Customer customer = new Customer();
-        customer.setFirstName(customerDTO.getFirstname());
-        customer.setLastName(customerDTO.getLastname());
+        customer.setFirstName(customerDTO.getFirstName());
+        customer.setLastName(customerDTO.getLastName());
         customer.setId(1L);
 
         when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO savedDTO = customerService.saveCustomerByDTO(1L, customerDTO);
 
-        assertThat(savedDTO.getFirstname(), is(customerDTO.getFirstname()));
-        assertThat(savedDTO.getLastname(), is(customerDTO.getLastname()));
+        assertThat(savedDTO.getFirstName(), is(customerDTO.getFirstName()));
+        assertThat(savedDTO.getLastName(), is(customerDTO.getLastName()));
         assertThat(savedDTO.getCustomerUrl(), is("/api/v1/customers/1"));
     }
 

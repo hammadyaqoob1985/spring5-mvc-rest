@@ -27,16 +27,16 @@ public class CustomerMapperTest {
         CustomerDTO customerDTO =  customerMapper.customerToCustomerDTO(customer);
 
         assertThat(customerDTO, not(nullValue()));
-        assertThat(customerDTO.getFirstname(), is(FIRST));
-        assertThat(customerDTO.getLastname(), is(LAST));
+        assertThat(customerDTO.getFirstName(), is(FIRST));
+        assertThat(customerDTO.getLastName(), is(LAST));
     }
 
     @Test
     public void customerDTOToCustomer() {
 
         CustomerDTO customerDTO =  new CustomerDTO();
-        customerDTO.setFirstname(FIRST);
-        customerDTO.setLastname(LAST);
+        customerDTO.setFirstName(FIRST);
+        customerDTO.setLastName(LAST);
 
         Customer customer =  customerMapper.customerDTOToCustomer(customerDTO);
 

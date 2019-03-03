@@ -56,7 +56,7 @@ public class CustomerServiceImplIT {
         String originalLastName = original.getLastName();
 
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setFirstname("Updated");
+        customerDTO.setFirstName("Updated");
 
         customerService.patchCustomerByDTO(id, customerDTO);
 
@@ -78,7 +78,7 @@ public class CustomerServiceImplIT {
        String originalLastName = original.getLastName();
 
        CustomerDTO customerDTO = new CustomerDTO();
-       customerDTO.setLastname("Updated");
+       customerDTO.setLastName("Updated");
 
        customerService.patchCustomerByDTO(id, customerDTO);
 
